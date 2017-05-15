@@ -1,0 +1,15 @@
+CFLAGS = -Wall -fpic -coverage -lm -std=c99.
+
+unittestresults.out: unittest1.c randomtestcard1.c dominion.c rngs.c	
+	echo "results from random tests:" > unittestresults.out
+	
+	echo "randomtestadventurer.c: " >> unittestresults.out
+	gcc -o randomtestadventurer randomtestadventurer.c dominion.c rngs.c  -Wall -fpic -coverage -lm -std=c99
+	randomtestadventurer >> unittestresults.out
+	gcov -b -f dominion.c >> unittestresults.out
+	
+	
+	echo "randomtestcard1.c: " >> unittestresults.out
+	gcc -o randomtestcard1 randomtestcard1.c dominion.c rngs.c -Wall -fpic -coverage -lm -std=c99
+	randomtestcard1 >> unittestresults.out
+	gcov -b -f dominion.c >> unittestresults.out

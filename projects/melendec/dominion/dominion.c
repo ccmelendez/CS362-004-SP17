@@ -1143,30 +1143,42 @@ int cardEffect(int card, int choice1, int choice2, int choice3, struct gameState
 
 int playAdventurer(int drawntreasure,struct gameState *state,int currentPlayer,int *cardDrawn,int temphand[],int z)
 {
+	
 	while(drawntreasure < 2)
 	{
+		//printf("drawntreasure: %d\n",drawntreasure);
+		
 		if(state->deckCount[currentPlayer] < 1)
 		{
+			
 			shuffle(currentPlayer,state);
 		}
 		drawCard(currentPlayer,state);
+		//printf("*cardDrawn = state->hand[%d][%d]: %d\n",currentPlayer,state->handCount[currentPlayer]-1,state->hand[currentPlayer][state->handCount[currentPlayer]-1]);
 		*cardDrawn = state->hand[currentPlayer][state->handCount[currentPlayer]-1];
-		printf("cardDrawn: %d\n",*cardDrawn);
+		//printf("cardDrawn: %d\n",*cardDrawn);
+		
 		if ((*cardDrawn) == copper || (*cardDrawn) == silver || (*cardDrawn) == gold)
 	  	{
+			
 			(drawntreasure)++;
-			printf("drawntreasure: %d\n", drawntreasure);
+
 		}
 		else
 		{
+			
 	  		temphand[z]=*cardDrawn;
-			printf("temphand: %d\n",temphand[z]);
+			
 			state->handCount[currentPlayer]--; //this should just remove the top card (the most recently drawn one).
 			(z)++;
 		}
-      	}	
+    }	
 	while((z)-1>=0)
 	{
+		
+		//printf("temphand[(z)-1]: %d\n",temphand[(z)-1]);
+		//printf("z-1: %d\n",z-1);
+		//printf("state->discard[%d][%d]: %d\n",currentPlayer,state->discardCount[currentPlayer]+1,state->discard[currentPlayer][state->discardCount[currentPlayer]+1]);
 		state->discard[currentPlayer][state->discardCount[currentPlayer]++]=temphand[(z)-1]; // discard all cards in play that have been drawn
 		(z)=(z)-1;
 	}
@@ -1181,6 +1193,7 @@ int playSmithy(struct gameState *state, int handPos, int currentPlayer)
     for (i = 0; i < 3; i++)
 	{
 	  drawCard(currentPlayer, state);
+	
 	}
 			
     //discard card from hand
@@ -1273,9 +1286,10 @@ int discardCard(int handPos, int currentPlayer, struct gameState *state, int tra
       state->playedCards[state->playedCardCount] = state->hand[currentPlayer][handPos]; 
       state->playedCardCount++;
     }
-	
+
   //set played card to -1
   state->hand[currentPlayer][handPos] = -1;
+
 	
   //remove card from player's hand
   if ( handPos == (state->handCount[currentPlayer] - 1) ) 	//last card in hand array is played

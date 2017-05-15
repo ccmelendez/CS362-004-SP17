@@ -1,0 +1,2 @@
+	gcc randomtestcard1.c dominion.c rngs.c -lm -o randomtestcard1
+	gcc randomtestadventurer.c dominion.c rngs.c -lm -o randomtestadventurer
