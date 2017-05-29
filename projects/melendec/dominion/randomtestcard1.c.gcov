@@ -1,0 +1,126 @@
+        -:    0:Source:randomtestcard1.c
+        -:    0:Graph:randomtestcard1.gcno
+        -:    0:Data:randomtestcard1.gcda
+        -:    0:Runs:1
+        -:    0:Programs:1
+        -:    1:#include "dominion.h"
+        -:    2:#include "dominion_helpers.h"
+        -:    3:#include <string.h>
+        -:    4:#include <stdio.h>
+        -:    5:#include <assert.h>
+        -:    6:#include "rngs.h"
+        -:    7:
+        -:    8:#define DEBUG 0
+        -:    9:#define NOISY_TEST 1
+        -:   10:
+function checkPlaySmithyCard called 3000 returned 100% blocks executed 75%
+     3000:   11:int checkPlaySmithyCard(struct gameState g, int handPos, int currentPlayer) {
+        -:   12:  int r;
+        -:   13:
+        -:   14:  
+     3000:   15:  r = playSmithy(&g, handPos, currentPlayer);
+call    0 returned 3000
+        -:   16:  
+     3000:   17:  assert(r == 0);
+branch  0 taken 0 (fallthrough)
+branch  1 taken 3000
+call    2 never executed
+     3000:   18:}
+        -:   19:
+function main called 1 returned 0% blocks executed 100%
+        1:   20:int main () {
+        -:   21:
+        -:   22:  int i,j, n, r, deckCount, discardCount, handCount,testHandCount,smithyPosition, randomPlayer;
+        -:   23:
+        1:   24:  int k[10] = {adventurer, council_room, feast, gardens, mine,
+        -:   25:	       remodel, smithy, village, baron, great_hall};
+        -:   26:
+        -:   27:  struct gameState H,G;
+        -:   28:
+        1:   29:  printf ("Testing playSmithy.\n");
+call    0 returned 1
+        -:   30:
+        1:   31:  printf ("RUNNING RANDOM TESTS....\n");
+call    0 returned 1
+        -:   32:
+        1:   33:  SelectStream(2);
+call    0 returned 1
+        1:   34:  PutSeed(3);
+call    0 returned 1
+        -:   35:
+     3001:   36:  for (n = 0; n < 3000; n++) {
+branch  0 taken 3000
+branch  1 taken 1 (fallthrough)
+ 78903000:   37:    for (i = 0; i < sizeof(struct gameState); i++) {
+branch  0 taken 78900000
+branch  1 taken 3000 (fallthrough)
+ 78900000:   38:      ((char*)&G)[i] = floor(Random() * 256);
+call    0 returned 78900000
+ 78900000:   39:	  ((char*)&H)[i] = ((char*)&G)[i];
+        -:   40:	  //copy what has been assigned to G to H as well.
+        -:   41:    }
+        -:   42:	//printf("TEST # %d\n",n);
+     3000:   43:	G.numPlayers =  ( ( (int)(floor(Random() * 4)) ) + 1) %4;
+call    0 returned 3000
+     3000:   44:	H.numPlayers = G.numPlayers;
+        -:   45:	//randomize the number of players between 0 and 4
+        -:   46:	
+     3000:   47:	testHandCount = floor(Random() * MAX_HAND);
+call    0 returned 3000
+        -:   48:	//randomize the handcount to give our players, between 0 and MAX_HAND
+        -:   49:	
+     3000:   50:	smithyPosition = floor(Random() * testHandCount);
+call    0 returned 3000
+        -:   51:	//randomize the position of where smithy will be between 0 and the random number between 0 and MAX_HAND
+        -:   52:		
+     3000:   53:	randomPlayer = floor(Random() * G.numPlayers);
+call    0 returned 3000
+        -:   54:	//pick random player to test on
+        -:   55:	
+     3000:   56:	G.handCount[randomPlayer] = testHandCount;
+     3000:   57:	G.hand[randomPlayer][smithyPosition] = smithy;
+     3000:   58:	H.handCount[randomPlayer] = testHandCount;
+     3000:   59:	H.hand[randomPlayer][smithyPosition] = smithy;
+        -:   60:	//give the player a smithy card and randomize the number of cards in their hand
+        -:   61:	
+     3000:   62:    G.deckCount[randomPlayer] = floor(Random() * MAX_DECK);
+call    0 returned 3000
+     3000:   63:    G.discardCount[randomPlayer] = floor(Random() * MAX_DECK -1);
+call    0 returned 3000
+     3000:   64:	G.playedCardCount = floor(Random() * MAX_DECK);
+call    0 returned 3000
+     3000:   65:	H.deckCount[randomPlayer] = floor(Random() * MAX_DECK);
+call    0 returned 3000
+     3000:   66:    H.discardCount[randomPlayer] = floor(Random() * MAX_DECK -1);
+call    0 returned 3000
+     3000:   67:	H.playedCardCount = floor(Random() * MAX_DECK);
+call    0 returned 3000
+        -:   68:	
+        -:   69:	//printf("G.numPlayers: %d | testHandCount: %d | smithyPosition: %d \n", G.numPlayers,testHandCount, smithyPosition);
+        -:   70:	//printf("randomPlayer: %d \n",randomPlayer);
+        -:   71:	//printf("G.deckCount[%d]:%d | G.discardCount[%d]: %d \n",randomPlayer,G.deckCount[randomPlayer],randomPlayer, G.discardCount[randomPlayer]);
+        -:   72:	
+   761687:   73:	for(j = 0; j < G.handCount[randomPlayer]; j++)
+branch  0 taken 758687
+branch  1 taken 3000 (fallthrough)
+        -:   74:	{
+   758687:   75:		if(j != smithyPosition)
+branch  0 taken 755693 (fallthrough)
+branch  1 taken 2994
+        -:   76:		{
+   755693:   77:			G.hand[randomPlayer][j] = floor(Random() * 10);
+call    0 returned 755693
+   755693:   78:			H.hand[randomPlayer][j] = floor(Random() * 10);
+call    0 returned 755693
+        -:   79:		}
+        -:   80:		//fill the player's hand with random cards, skip over the smithy card
+        -:   81:	}
+     3000:   82:	checkPlaySmithyCard(G,smithyPosition, randomPlayer);
+call    0 returned 3000
+        -:   83:  }
+        -:   84:
+        1:   85:  printf ("ALL TESTS OK\n");
+call    0 returned 1
+        -:   86:
+        1:   87:  exit(0);
+        -:   88:}
